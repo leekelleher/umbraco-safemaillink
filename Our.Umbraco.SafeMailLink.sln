@@ -24,6 +24,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Package", "Build Pack
 		_build\readme.txt = _build\readme.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft Assemblies", "Microsoft Assemblies", "{6A999459-95FD-404A-9B64-6C833C42B196}"
+	ProjectSection(SolutionItems) = preProject
+		_externals\Microsoft.Web.Infrastructure.dll = _externals\Microsoft.Web.Infrastructure.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Assemblies", "External Assemblies", "{C10841EC-72BA-45BA-A0C0-D568DE68F130}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,7 +46,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{0D6692D9-D1BC-4622-9EAD-162A3132D12A} = {216785D5-4685-4C6A-AA29-39F5C294933D}
 		{149480E2-6BA0-438F-876F-696BCA5CEF4B} = {216785D5-4685-4C6A-AA29-39F5C294933D}
+		{C10841EC-72BA-45BA-A0C0-D568DE68F130} = {216785D5-4685-4C6A-AA29-39F5C294933D}
+		{0D6692D9-D1BC-4622-9EAD-162A3132D12A} = {C10841EC-72BA-45BA-A0C0-D568DE68F130}
+		{6A999459-95FD-404A-9B64-6C833C42B196} = {C10841EC-72BA-45BA-A0C0-D568DE68F130}
 	EndGlobalSection
 EndGlobal
