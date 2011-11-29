@@ -70,7 +70,7 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		}
 	</script>
 ";
-			var matchBody = Regex.Match(content, HTML_BODY_CLOSING, RegexOptions.IgnoreCase);
+			var matchBody = Regex.Match(content, HTML_BODY_CLOSING, RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
 			output.Append(content.Substring(startIndex, matchBody.Index - startIndex));
 			output.Append(javascript);
 			output.Append(content.Substring(matchBody.Index));
