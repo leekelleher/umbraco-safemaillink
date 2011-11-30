@@ -20,25 +20,15 @@ namespace Our.Umbraco.SafeMailLink.Filters
 
 		public override void Write(byte[] buffer, int offset, int count)
 		{
+			// get the content string
 			string content = UTF8Encoding.UTF8.GetString(buffer, offset, count);
-
-			if (!Regex.IsMatch(content, HTML_BODY_CLOSING, RegexOptions.IgnoreCase))
-			{
-				this.OutputStream.Write(buffer, offset, count);
-				return;
-			}
 
 			int startIndex = 0;
 			var output = new StringBuilder();
 			var regex = new Regex(REGEX_MAILTO_LINK, RegexOptions.IgnoreCase);
 			var matches = regex.Matches(content);
 
-			if (matches.Count == 0)
-			{
-				this.OutputStream.Write(buffer, offset, count);
-				return;
-			}
-
+			// loop through each of the 'mailto' link matches
 			foreach (Match match in matches)
 			{
 				var encodedEmail = BitConverter.ToString(Encoding.ASCII.GetBytes(match.Groups["email"].Value)).Replace("-", string.Empty);
@@ -56,7 +46,10 @@ namespace Our.Umbraco.SafeMailLink.Filters
 				startIndex = match.Index + match.Length;
 			}
 
-			var javascript = @"
+			// check if the closing </body> tag is matched
+			if (Regex.IsMatch(content, HTML_BODY_CLOSING, RegexOptions.IgnoreCase))
+			{
+				var javascript = @"
 	<script type=""text/javascript"">
 		function sendEmail(encodedEmail) {
 			var email = '';
@@ -70,11 +63,20 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		}
 	</script>
 ";
-			var matchBody = Regex.Match(content, HTML_BODY_CLOSING, RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
-			output.Append(content.Substring(startIndex, matchBody.Index - startIndex));
-			output.Append(javascript);
-			output.Append(content.Substring(matchBody.Index));
+				var matchBody = Regex.Match(content, HTML_BODY_CLOSING, RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
+				output.Append(content.Substring(startIndex, matchBody.Index - startIndex));
+				output.Append(javascript);
+				output.Append(content.Substring(matchBody.Index));
+			}
 
+			// check if any output has been appended...
+			if (output.Length == 0)
+			{
+				// ... if not, then append all content.
+				output.Append(content);
+			}
+
+			// write out the output!
 			var outputBuffer = UTF8Encoding.UTF8.GetBytes(output.ToString());
 			this.OutputStream.Write(outputBuffer, 0, outputBuffer.Length);
 		}
