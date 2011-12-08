@@ -15,7 +15,9 @@ namespace Our.Umbraco.SafeMailLink.Events
 		public static void RegisterModules()
 		{
 			if (modulesRegistered)
+			{
 				return;
+			}
 
 			DynamicModuleUtility.RegisterModule(typeof(RegisterFilters));
 

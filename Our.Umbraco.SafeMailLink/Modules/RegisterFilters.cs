@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Mime;
 using System.Web;
 using Our.Umbraco.SafeMailLink.Filters;
 using umbraco.IO;
@@ -7,7 +8,7 @@ namespace Our.Umbraco.SafeMailLink.Modules
 {
 	public class RegisterFilters : IHttpModule
 	{
-		public const String INSTALL_KEY = "SafeMailLinkModuleInstalled";
+		public readonly string InstallKey = "SafeMailLinkModuleInstalled";
 
 		public void Dispose()
 		{
@@ -24,17 +25,17 @@ namespace Our.Umbraco.SafeMailLink.Modules
 			if (HttpContext.Current != null)
 			{
 				var context = HttpContext.Current;
-				if (!context.Items.Contains(INSTALL_KEY))
+				if (!context.Items.Contains(this.InstallKey))
 				{
 					var response = context.Response;
 					var currentExecutionFilePath = context.Request.CurrentExecutionFilePath;
 
-					if ((response.ContentType == "text/html") && (!this.IsReservedPath(currentExecutionFilePath)))
+					if ((response.ContentType == MediaTypeNames.Text.Html) && (!this.IsReservedPath(currentExecutionFilePath)))
 					{
-						response.Filter = new EncodeMailLink(response.Filter);
+						response.Filter = new EncodeMailLink(response.Filter, response.ContentEncoding);
 					}
 
-					context.Items.Add(INSTALL_KEY, new object());
+					context.Items.Add(this.InstallKey, new object());
 				}
 			}
 		}

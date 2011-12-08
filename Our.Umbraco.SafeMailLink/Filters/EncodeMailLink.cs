@@ -7,31 +7,34 @@ namespace Our.Umbraco.SafeMailLink.Filters
 {
 	public class EncodeMailLink : MemoryStream
 	{
-		const string HTML_BODY_CLOSING = "</body>";
+		private readonly string HtmlBodyClosing = "</body>";
 
-		const string REGEX_MAILTO_LINK = "(?<email>mailto:\\w+([-+.]\\w+)*?@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*?(\\?.*?)?)(?<restOfTag>\".*?>)(?<text>(.|\\s)*?)</a>";
+		private readonly string RegExMailToLink = "(?<email>mailto:\\w+([-+.]\\w+)*?@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*?(\\?.*?)?)(?<restOfTag>\".*?>)(?<text>(.|\\s)*?)</a>";
+
+		private Encoding TextEncoding;
 
 		private Stream OutputStream = null;
 
-		public EncodeMailLink(Stream output)
+		public EncodeMailLink(Stream output, Encoding encoding)
 		{
 			this.OutputStream = output;
+			this.TextEncoding = encoding;
 		}
 
 		public override void Write(byte[] buffer, int offset, int count)
 		{
 			// get the content string
-			string content = UTF8Encoding.UTF8.GetString(buffer, offset, count);
+			string content = this.TextEncoding.GetString(buffer, offset, count);
 
 			int startIndex = 0;
 			var output = new StringBuilder();
-			var regex = new Regex(REGEX_MAILTO_LINK, RegexOptions.IgnoreCase);
+			var regex = new Regex(this.RegExMailToLink, RegexOptions.IgnoreCase);
 			var matches = regex.Matches(content);
 
 			// loop through each of the 'mailto' link matches
 			foreach (Match match in matches)
 			{
-				var encodedEmail = BitConverter.ToString(Encoding.ASCII.GetBytes(match.Groups["email"].Value)).Replace("-", string.Empty);
+				var encodedEmail = BitConverter.ToString(this.TextEncoding.GetBytes(match.Groups["email"].Value)).Replace("-", string.Empty);
 				var disguisedEmail = match.Groups["text"].Value.Replace("@", "@<!--x-->").Replace(".", "<!--y-->.");
 
 				output
@@ -47,7 +50,7 @@ namespace Our.Umbraco.SafeMailLink.Filters
 			}
 
 			// check if the closing </body> tag is matched
-			if (Regex.IsMatch(content, HTML_BODY_CLOSING, RegexOptions.IgnoreCase))
+			if (Regex.IsMatch(content, this.HtmlBodyClosing, RegexOptions.IgnoreCase))
 			{
 				var javascript = @"
 	<script type=""text/javascript"">
@@ -63,7 +66,7 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		}
 	</script>
 ";
-				var matchBody = Regex.Match(content, HTML_BODY_CLOSING, RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
+				var matchBody = Regex.Match(content, this.HtmlBodyClosing, RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
 				output.Append(content.Substring(startIndex, matchBody.Index - startIndex));
 				output.Append(javascript);
 				output.Append(content.Substring(matchBody.Index));
@@ -77,7 +80,7 @@ namespace Our.Umbraco.SafeMailLink.Filters
 			}
 
 			// write out the output!
-			var outputBuffer = UTF8Encoding.UTF8.GetBytes(output.ToString());
+			var outputBuffer = this.TextEncoding.GetBytes(output.ToString());
 			this.OutputStream.Write(outputBuffer, 0, outputBuffer.Length);
 		}
 	}

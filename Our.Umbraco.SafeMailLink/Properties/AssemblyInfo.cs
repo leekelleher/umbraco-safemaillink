@@ -20,7 +20,7 @@ using Our.Umbraco.SafeMailLink.Events;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("46850d7f-f14e-469a-8d8b-b476f2995f0e")]
+[assembly: Guid("46850D7F-F14E-469A-8D8B-B476F2995F0E")]
 
 // Version information for an assembly consists of the following four values:
 // [Major].[Minor].[Build].[Revision]
