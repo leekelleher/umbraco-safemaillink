@@ -42,11 +42,14 @@
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web" />
+    <Reference Include="umbraco">
+      <HintPath>..\_externals\umbraco.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\ApplicationEventsHandler.cs" />
-    <Compile Include="Filters\EncodeMailLink.cs" />
-    <Compile Include="Modules\RegisterFilters.cs" />
+    <Compile Include="Events\Transformation.cs" />
+    <Compile Include="Filters\ResponseFilterStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

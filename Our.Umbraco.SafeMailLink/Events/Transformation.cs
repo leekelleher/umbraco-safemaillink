@@ -1,11 +1,12 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Our.Umbraco.SafeMailLink.Filters
+namespace Our.Umbraco.SafeMailLink.Events
 {
-	public class EncodeMailLink : MemoryStream
+	public class Transformation
 	{
 		private readonly string HtmlBodyClosing = "</body>";
 
@@ -13,19 +14,13 @@ namespace Our.Umbraco.SafeMailLink.Filters
 
 		private Encoding TextEncoding;
 
-		private Stream OutputStream = null;
-
-		public EncodeMailLink(Stream output, Encoding encoding)
+		public Transformation(Encoding encoding)
 		{
-			this.OutputStream = output;
 			this.TextEncoding = encoding;
 		}
 
-		public override void Write(byte[] buffer, int offset, int count)
+		public string EncodeMailLink(string content)
 		{
-			// get the content string
-			string content = this.TextEncoding.GetString(buffer, offset, count);
-
 			int startIndex = 0;
 			var output = new StringBuilder();
 			var regex = new Regex(this.RegExMailToLink, RegexOptions.IgnoreCase);
@@ -79,9 +74,7 @@ namespace Our.Umbraco.SafeMailLink.Filters
 				output.Append(content);
 			}
 
-			// write out the output!
-			var outputBuffer = this.TextEncoding.GetBytes(output.ToString());
-			this.OutputStream.Write(outputBuffer, 0, outputBuffer.Length);
+			return output.ToString();
 		}
 	}
 }
