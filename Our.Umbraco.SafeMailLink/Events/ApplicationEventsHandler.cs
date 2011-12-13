@@ -1,25 +1,27 @@
-﻿using System;
-using Our.Umbraco.SafeMailLink.Filters;
-using umbraco;
+﻿using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+using Our.Umbraco.SafeMailLink.Modules;
 using umbraco.BusinessLogic;
 
 namespace Our.Umbraco.SafeMailLink.Events
 {
 	public class ApplicationEventsHandler : ApplicationBase
 	{
+		private static bool modulesRegistered;
+
 		public ApplicationEventsHandler()
 		{
-			UmbracoDefault.BeforeRequestInit += new UmbracoDefault.RequestInitEventHandler(this.UmbracoDefault_BeforeRequestInit);
 		}
 
-		protected void UmbracoDefault_BeforeRequestInit(object sender, RequestInitEventArgs e)
+		public static void RegisterModules()
 		{
-			var transformation = new Transformation(e.Context.Response.ContentEncoding);
-			
-			var filter = new ResponseFilterStream(e.Context.Response.Filter);
-			filter.TransformString += new Func<string, string>(transformation.EncodeMailLink);
+			if (modulesRegistered)
+			{
+				return;
+			}
 
-			e.Context.Response.Filter = filter;
+			DynamicModuleUtility.RegisterModule(typeof(RegisterFilters));
+
+			modulesRegistered = true;
 		}
 	}
 }

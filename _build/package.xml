@@ -4,7 +4,7 @@
 	<info>
 		<package>
 			<name>SafeMailLink</name>
-			<version>1.0.2</version>
+			<version>1.1</version>
 			<license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
 			<url>http://our.umbraco.org/projects/website-utilities/safe-mail-link</url>
 			<requirements>

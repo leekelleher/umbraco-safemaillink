@@ -7,7 +7,7 @@
 
 	<!-- PROPERTIES -->
 	<PropertyGroup>
-		<PackageVersion>1.0.2</PackageVersion>
+		<PackageVersion>1.1</PackageVersion>
 		<PackageProjectName>Our.Umbraco.SafeMailLink</PackageProjectName>
 	</PropertyGroup>
 
@@ -30,12 +30,12 @@
 			Encoding="ASCII"
 			Files="$(RootDir)\Properties\AssemblyInfo.cs"
 			Regex="AssemblyVersion\(&quot;.*&quot;\)\]"
-			ReplacementText="AssemblyVersion(&quot;$(PackageVersion).0&quot;)]" />
+			ReplacementText="AssemblyVersion(&quot;$(PackageVersion).0.0&quot;)]" />
 		<FileUpdate
 			Encoding="ASCII"
 			Files="$(RootDir)\Properties\AssemblyInfo.cs"
 			Regex="AssemblyFileVersion\(&quot;.*&quot;\)\]"
-			ReplacementText="AssemblyFileVersion(&quot;$(PackageVersion).0&quot;)]" />
+			ReplacementText="AssemblyFileVersion(&quot;$(PackageVersion).0.0&quot;)]" />
 	</Target>
 
 	<!-- COMPILE -->

@@ -50,6 +50,7 @@
     <Compile Include="Events\ApplicationEventsHandler.cs" />
     <Compile Include="Events\Transformation.cs" />
     <Compile Include="Filters\ResponseFilterStream.cs" />
+    <Compile Include="Modules\RegisterFilters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
