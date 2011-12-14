@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net.Mime;
 using System.Web;
-using Our.Umbraco.SafeMailLink.Events;
 using Our.Umbraco.SafeMailLink.Filters;
+using Our.Umbraco.SafeMailLink.Utilities;
 using umbraco.IO;
 
 namespace Our.Umbraco.SafeMailLink.Modules
@@ -33,9 +33,9 @@ namespace Our.Umbraco.SafeMailLink.Modules
 
 					if ((response.ContentType == MediaTypeNames.Text.Html) && (!this.IsReservedPath(currentExecutionFilePath)))
 					{
-						var transformation = new Transformation(response.ContentEncoding);
+						var parser = new Parser(response.ContentEncoding);
 						var filter = new ResponseFilterStream(response.Filter);
-						filter.TransformString += new Func<string, string>(transformation.EncodeMailLink);
+						filter.TransformString += new Func<string, string>(parser.EncodeMailLink);
 						response.Filter = filter;
 					}
 

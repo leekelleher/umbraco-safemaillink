@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Our.Umbraco.SafeMailLink.Events
+namespace Our.Umbraco.SafeMailLink.Utilities
 {
-	public class Transformation
+	public class Parser
 	{
 		private readonly string HtmlBodyClosing = "</body>";
 
@@ -14,7 +12,7 @@ namespace Our.Umbraco.SafeMailLink.Events
 
 		private Encoding TextEncoding;
 
-		public Transformation(Encoding encoding)
+		public Parser(Encoding encoding)
 		{
 			this.TextEncoding = encoding;
 		}
