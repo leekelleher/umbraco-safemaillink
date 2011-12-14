@@ -23,7 +23,7 @@ using Our.Umbraco.SafeMailLink.Events;
 
 // Version information for an assembly consists of the following four values:
 // [Major].[Minor].[Build].[Revision]
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]
 
 [assembly: PreApplicationStartMethod(typeof(ApplicationEventsHandler), "RegisterModules")]
