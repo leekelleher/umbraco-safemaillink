@@ -16,22 +16,22 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <summary>
 		/// The original stream
 		/// </summary>
-		Stream _stream;
+		private Stream _stream;
 
 		/// <summary>
 		/// Current position in the original stream
 		/// </summary>
-		long _position;
+		private long _position;
 
 		/// <summary>
 		/// Stream that original content is read into and then passed to TransformStream function
 		/// </summary>
-		MemoryStream _cacheStream = new MemoryStream(5000);
+		private MemoryStream _cacheStream = new MemoryStream(5000);
 
 		/// <summary>
 		/// Internal pointer that that keeps track of the size of the cacheStream
 		/// </summary>
-		int _cachePointer = 0;
+		private int _cachePointer = 0;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ResponseFilterStream"/> class.
@@ -39,18 +39,20 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <param name="responseStream">The response stream.</param>
 		public ResponseFilterStream(Stream responseStream)
 		{
-			_stream = responseStream;
+			this._stream = responseStream;
 		}
 
 		/// <summary>
 		/// Determines whether the stream is captured
 		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is captured; otherwise, <c>false</c>.
+		/// </value>
 		private bool IsCaptured
 		{
 			get
 			{
-
-				if (CaptureStream != null || CaptureString != null || TransformStream != null || TransformString != null)
+				if (this.CaptureStream != null || this.CaptureString != null || this.TransformStream != null || this.TransformString != null)
 				{
 					return true;
 				}
@@ -62,11 +64,14 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <summary>
 		/// Determines whether the Write method is outputting data immediately or delaying output until Flush() is fired.
 		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is output delayed; otherwise, <c>false</c>.
+		/// </value>
 		private bool IsOutputDelayed
 		{
 			get
 			{
-				if (TransformStream != null || TransformString != null)
+				if (this.TransformStream != null || this.TransformString != null)
 				{
 					return true;
 				}
@@ -121,9 +126,9 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <param name="ms">The ms.</param>
 		protected virtual void OnCaptureStream(MemoryStream ms)
 		{
-			if (CaptureStream != null)
+			if (this.CaptureStream != null)
 			{
-				CaptureStream(ms);
+				this.CaptureStream(ms);
 			}
 		}
 
@@ -133,10 +138,10 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <param name="ms">The ms.</param>
 		private void OnCaptureStringInternal(MemoryStream ms)
 		{
-			if (CaptureString != null)
+			if (this.CaptureString != null)
 			{
 				string content = HttpContext.Current.Response.ContentEncoding.GetString(ms.ToArray());
-				OnCaptureString(content);
+				this.OnCaptureString(content);
 			}
 		}
 
@@ -146,9 +151,9 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <param name="output">The output.</param>
 		protected virtual void OnCaptureString(string output)
 		{
-			if (CaptureString != null)
+			if (this.CaptureString != null)
 			{
-				CaptureString(output);
+				this.CaptureString(output);
 			}
 		}
 
@@ -159,9 +164,9 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <returns></returns>
 		protected virtual byte[] OnTransformWrite(byte[] buffer)
 		{
-			if (TransformWrite != null)
+			if (this.TransformWrite != null)
 			{
-				return TransformWrite(buffer);
+				return this.TransformWrite(buffer);
 			}
 
 			return buffer;
@@ -175,7 +180,7 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		private byte[] OnTransformWriteStringInternal(byte[] buffer)
 		{
 			var encoding = HttpContext.Current.Response.ContentEncoding;
-			var output = OnTransformWriteString(encoding.GetString(buffer));
+			var output = this.OnTransformWriteString(encoding.GetString(buffer));
 			return encoding.GetBytes(output);
 		}
 
@@ -186,9 +191,9 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <returns></returns>
 		private string OnTransformWriteString(string value)
 		{
-			if (TransformWriteString != null)
+			if (this.TransformWriteString != null)
 			{
-				return TransformWriteString(value);
+				return this.TransformWriteString(value);
 			}
 
 			return value;
@@ -201,9 +206,9 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <returns></returns>
 		protected virtual MemoryStream OnTransformCompleteStream(MemoryStream ms)
 		{
-			if (TransformStream != null)
+			if (this.TransformStream != null)
 			{
-				return TransformStream(ms);
+				return this.TransformStream(ms);
 			}
 
 			return ms;
@@ -213,13 +218,13 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// Allows transforming of strings
 		/// Note this handler is internal and not meant to be overridden as the TransformString Event has to be hooked up in order for this handler to even fire to avoid the overhead of string conversion on every pass through.
 		/// </summary>
-		/// <param name="responseText"></param>
+		/// <param name="responseText">The response text.</param>
 		/// <returns></returns>
 		private string OnTransformCompleteString(string responseText)
 		{
-			if (TransformString != null)
+			if (this.TransformString != null)
 			{
-				TransformString(responseText);
+				this.TransformString(responseText);
 			}
 
 			return responseText;
@@ -229,18 +234,18 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// Wrapper method form OnTransformString that handles
 		/// stream to string and vice versa conversions
 		/// </summary>
-		/// <param name="ms"></param>
+		/// <param name="ms">The ms.</param>
 		/// <returns></returns>
 		internal MemoryStream OnTransformCompleteStringInternal(MemoryStream ms)
 		{
-			if (TransformString == null)
+			if (this.TransformString == null)
 			{
 				return ms;
 			}
 
 			string content = HttpContext.Current.Response.ContentEncoding.GetString(ms.ToArray());
 
-			content = TransformString(content);
+			content = this.TransformString(content);
 			byte[] buffer = HttpContext.Current.Response.ContentEncoding.GetBytes(content);
 			ms = new MemoryStream();
 			ms.Write(buffer, 0, buffer.Length);
@@ -314,12 +319,12 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		{
 			get
 			{
-				return _position;
+				return this._position;
 			}
 
 			set
 			{
-				_position = value;
+				this._position = value;
 			}
 		}
 
@@ -331,7 +336,7 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <returns></returns>
 		public override long Seek(long offset, SeekOrigin direction)
 		{
-			return _stream.Seek(offset, direction);
+			return this._stream.Seek(offset, direction);
 		}
 
 		/// <summary>
@@ -340,7 +345,7 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <param name="length">The length.</param>
 		public override void SetLength(long length)
 		{
-			_stream.SetLength(length);
+			this._stream.SetLength(length);
 		}
 
 		/// <summary>
@@ -348,7 +353,7 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// </summary>
 		public override void Close()
 		{
-			_stream.Close();
+			this._stream.Close();
 		}
 
 		/// <summary>
@@ -357,28 +362,27 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
 		public override void Flush()
 		{
-
-			if (IsCaptured && _cacheStream.Length > 0)
+			if (this.IsCaptured && this._cacheStream.Length > 0)
 			{
 				// Check for transform implementations
-				_cacheStream = OnTransformCompleteStream(_cacheStream);
-				_cacheStream = OnTransformCompleteStringInternal(_cacheStream);
+				this._cacheStream = this.OnTransformCompleteStream(this._cacheStream);
+				this._cacheStream = this.OnTransformCompleteStringInternal(this._cacheStream);
 
-				OnCaptureStream(_cacheStream);
-				OnCaptureStringInternal(_cacheStream);
+				this.OnCaptureStream(this._cacheStream);
+				this.OnCaptureStringInternal(this._cacheStream);
 
 				// write the stream back out if output was delayed
-				if (IsOutputDelayed)
+				if (this.IsOutputDelayed)
 				{
-					_stream.Write(_cacheStream.ToArray(), 0, (int)_cacheStream.Length);
+					this._stream.Write(this._cacheStream.ToArray(), 0, (int)this._cacheStream.Length);
 				}
 
 				// Clear the cache once we've written it out
-				_cacheStream.SetLength(0);
+				this._cacheStream.SetLength(0);
 			}
 
 			// default flush behavior
-			_stream.Flush();
+			this._stream.Flush();
 		}
 
 		/// <summary>
@@ -400,7 +404,7 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
 		public override int Read(byte[] buffer, int offset, int count)
 		{
-			return _stream.Read(buffer, offset, count);
+			return this._stream.Read(buffer, offset, count);
 		}
 
 		/// <summary>
@@ -421,27 +425,27 @@ namespace Our.Umbraco.SafeMailLink.Filters
 		/// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
 		public override void Write(byte[] buffer, int offset, int count)
 		{
-			if (IsCaptured)
+			if (this.IsCaptured)
 			{
 				// copy to holding buffer only - we'll write out later
-				_cacheStream.Write(buffer, 0, count);
-				_cachePointer += count;
+				this._cacheStream.Write(buffer, 0, count);
+				this._cachePointer += count;
 			}
 
 			// just transform this buffer
-			if (TransformWrite != null)
+			if (this.TransformWrite != null)
 			{
-				buffer = OnTransformWrite(buffer);
+				buffer = this.OnTransformWrite(buffer);
 			}
 
-			if (TransformWriteString != null)
+			if (this.TransformWriteString != null)
 			{
-				buffer = OnTransformWriteStringInternal(buffer);
+				buffer = this.OnTransformWriteStringInternal(buffer);
 			}
 
-			if (!IsOutputDelayed)
+			if (!this.IsOutputDelayed)
 			{
-				_stream.Write(buffer, offset, buffer.Length);
+				this._stream.Write(buffer, offset, buffer.Length);
 			}
 		}
 	}
