@@ -6,7 +6,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{216785D5-4685-4C6A-AA29-39F5C294933D}"
 	ProjectSection(SolutionItems) = preProject
 		MIT-LICENSE.txt = MIT-LICENSE.txt
-		README.md = README.md
+		README.markdown = README.markdown
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Umbraco Assemblies", "Umbraco Assemblies", "{0D6692D9-D1BC-4622-9EAD-162A3132D12A}"
