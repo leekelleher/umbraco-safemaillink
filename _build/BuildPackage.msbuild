@@ -7,7 +7,7 @@
 
 	<!-- PROPERTIES -->
 	<PropertyGroup>
-		<PackageVersion>1.2</PackageVersion>
+		<PackageVersion>1.2.1</PackageVersion>
 		<PackageProjectName>Our.Umbraco.SafeMailLink</PackageProjectName>
 	</PropertyGroup>
 
@@ -30,12 +30,12 @@
 			Encoding="ASCII"
 			Files="$(RootDir)\Properties\AssemblyInfo.cs"
 			Regex="AssemblyVersion\(&quot;.*&quot;\)\]"
-			ReplacementText="AssemblyVersion(&quot;$(PackageVersion).0.0&quot;)]" />
+			ReplacementText="AssemblyVersion(&quot;$(PackageVersion).*&quot;)]" />
 		<FileUpdate
 			Encoding="ASCII"
 			Files="$(RootDir)\Properties\AssemblyInfo.cs"
 			Regex="AssemblyFileVersion\(&quot;.*&quot;\)\]"
-			ReplacementText="AssemblyFileVersion(&quot;$(PackageVersion).0.0&quot;)]" />
+			ReplacementText="AssemblyFileVersion(&quot;$(PackageVersion).*&quot;)]" />
 	</Target>
 
 	<!-- COMPILE -->
@@ -47,6 +47,7 @@
 	<Target Name="PrepairFiles" DependsOnTargets="Compile">
 		<ItemGroup>
 			<BinFiles Include="$(RootDir)\bin\Release\$(PackageProjectName).dll" />
+			<BinFiles Include="$(RootDir)\bin\Release\Microsoft.Web.Infrastructure.dll" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 		</ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
