@@ -1,5 +1,7 @@
-glob:*.suo
-glob:*.user
-glob:*/bin/*
-glob:*/obj/*
-glob:*.Cache
+syntax: glob
+*.suo
+*.user
+*/bin/*
+*/obj/*
+*.Cache
+packages/*
