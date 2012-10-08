@@ -69,7 +69,7 @@ namespace Our.Umbraco.SafeMailLink.Modules
 
 			foreach (var reservedPath in reservedPaths)
 			{
-				if (path.StartsWith(IOHelper.ResolveUrl(reservedPath)))
+				if (path.StartsWith(IOHelper.ResolveUrl(string.Concat(reservedPath, "/"))))
 				{
 					return true;
 				}
