@@ -8,8 +8,8 @@
 	<!-- PROPERTIES -->
 	<PropertyGroup>
 		<VersionMajor>1</VersionMajor>
-		<VersionMinor>2</VersionMinor>
-		<VersionPatch>1</VersionPatch>
+		<VersionMinor>3</VersionMinor>
+		<VersionPatch>0</VersionPatch>
 		<VersionSuffix></VersionSuffix>
 		<PackageProjectName>Our.Umbraco.SafeMailLink</PackageProjectName>
 	</PropertyGroup>
@@ -49,7 +49,6 @@
 	<Target Name="PrepairFiles" DependsOnTargets="Compile">
 		<ItemGroup>
 			<BinFiles Include="$(RootDir)\bin\Release\$(PackageProjectName).dll" />
-			<BinFiles Include="$(RootDir)\bin\Release\Microsoft.Web.Infrastructure.dll" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 		</ItemGroup>
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
