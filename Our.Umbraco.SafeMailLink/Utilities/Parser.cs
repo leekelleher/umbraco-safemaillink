@@ -8,7 +8,7 @@ namespace Our.Umbraco.SafeMailLink.Utilities
 	{
 		private readonly string HtmlBodyClosing = "</body>";
 
-		private readonly string RegExMailToLink = "(?<email>mailto:\\w+([-+.]\\w+)*?@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*?(\\?.*?)?)(?<restOfTag>\".*?>)(?<text>(.|\\s)*?)</a>";
+		private readonly string RegExMailToLink = "(?<email>mailto:\\w+(?:[-+.]\\w+)*?@\\w+(?:[-.]\\w+)*\\.\\w+(?:[-.]\\w+)*?(?:\\?.*?)?)(?<restOfTag>\"(?:.|\\s)*?>)(?<text>(?:.|\\s)*?)</a>";
 
 		private Encoding TextEncoding;
 
