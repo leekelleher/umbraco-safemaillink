@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net.Mime;
 using System.Web;
-using Our.Umbraco.SafeMailLink.Filters;
-using Our.Umbraco.SafeMailLink.Utilities;
+using SafeMailLink.Core.Filters;
+using SafeMailLink.Core.Utilities;
 using umbraco.IO;
 
 namespace Our.Umbraco.SafeMailLink.Modules

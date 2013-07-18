@@ -2,13 +2,12 @@
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Our.Umbraco.SafeMailLink.Events;
 using Our.Umbraco.SafeMailLink.Modules;
-using umbraco.BusinessLogic;
 
 [assembly: PreApplicationStartMethod(typeof(ApplicationEventsHandler), "RegisterModules")]
 
 namespace Our.Umbraco.SafeMailLink.Events
 {
-	public class ApplicationEventsHandler : ApplicationBase
+	public class ApplicationEventsHandler
 	{
 		private static bool modulesRegistered;
 
