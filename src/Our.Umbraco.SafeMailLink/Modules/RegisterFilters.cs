@@ -30,14 +30,12 @@ namespace Our.Umbraco.SafeMailLink.Modules
 				{
 					var response = context.Response;
 					var currentExecutionFilePath = context.Request.CurrentExecutionFilePath;
-					var rawUrl = context.Request.RawUrl;
-					var urlReferrer = context.Request.UrlReferrer.AbsolutePath;
+					var currentPagePath = context.Request.UrlReferrer != null ? context.Request.UrlReferrer.AbsolutePath : string.Empty;
 
 					if (
 						(response.ContentType == MediaTypeNames.Text.Html) &&
 						(this.IsReservedPath(currentExecutionFilePath) == false) &&
-						(this.IsReservedPath(urlReferrer) == false) &&
-						(rawUrl.Contains("dtgePreview=") == false)
+						(this.IsReservedPath(currentPagePath) == false)
 					)
 					{
 						var parser = new Parser(response.ContentEncoding);
