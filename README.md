@@ -1,5 +1,7 @@
 # SafeMailLink for Umbraco
 
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 Prevents spambots from harvesting email addresses from your webpages.
 
 This package dynamically encodes all the _mailto:_ links found on your rendered webpages at runtime.
